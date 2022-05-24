@@ -25,7 +25,7 @@ class Update(commands.Cog):
     async def on_ready(self):
         print('Bot Cogs are working (update.py)')
 
-    @commands.command()
+    @commands.command(hidden=True)
     @commands.check(ist_admin)
     async def update(self, ctx, cog:str):
         with self.update_lock:
@@ -33,7 +33,7 @@ class Update(commands.Cog):
                 url = self.updatebare_cogs[cog]
 
                 x = urllib.request.urlopen(url).read().decode("utf-8")
-                
+
                 with open(f"cogs/{cog}.py", "w", newline='') as d:
                     d.write(x)
 
