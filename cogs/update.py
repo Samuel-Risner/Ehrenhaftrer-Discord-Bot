@@ -1,9 +1,9 @@
 import threading
-import discord
-from discord.ext import commands
-import json
+import urllib.request
 
-from main import ist_admin
+from discord.ext import commands
+
+from main import ist_admin # Scheint zu funktionieren.
 
 class Update(commands.Cog):
 
@@ -15,9 +15,10 @@ class Update(commands.Cog):
 
         t = self.updatebare_cogs
 
-        t["ehre"] = ""
-        t["lilgadgets"] = ""
-        t["update"] = ""
+        t["ehre"] = "https://raw.githubusercontent.com/chamaedoreapruductions/Ehrenhaftrer-Discord-Bot/main/cogs/ehre.py"
+        t["lilgadgets"] = "https://raw.githubusercontent.com/chamaedoreapruductions/Ehrenhaftrer-Discord-Bot/main/cogs/lilgadgets.py"
+        t["update"] = "https://raw.githubusercontent.com/chamaedoreapruductions/Ehrenhaftrer-Discord-Bot/main/cogs/update.py"
+        
         del t
 
     @commands.Cog.listener()
@@ -26,10 +27,18 @@ class Update(commands.Cog):
 
     @commands.command()
     @commands.check(ist_admin)
-    async def update(self, ctx, cog):
+    async def update(self, ctx, cog:str):
         with self.update_lock:
             if cog in self.updatebare_cogs:
-                pass
+                url = self.updatebare_cogs[cog]
+
+                with open(f"cogs/{cog}.py", "w") as d:
+                    d.write(urllib.request.urlopen(url).read().decode("utf-8"))
+
+                await ctx.send(f"Cog {cog} wurde geupdatet, 'reload {cog}' um die Änderungen gültig zu machen.")
+
+            else:
+                await ctx.send(f"Cog {cog} ist nicht in der Update-Liste.")
 
 def setup(client):
     client.add_cog(Update(client))
