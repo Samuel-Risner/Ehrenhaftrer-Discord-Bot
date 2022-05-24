@@ -28,7 +28,6 @@ status = cycle(status_liste)
 
 @commands.command()
 async def ist_admin(ctx):
-    print(__name__)
     return ctx.author.id in admins
 
 @client.command()
