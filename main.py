@@ -1,7 +1,8 @@
-import discord
-from discord.ext import commands, tasks
 import os
 from itertools import cycle
+
+import discord
+from discord.ext import commands, tasks
 
 with open("Einstellungen/TOKEN.txt", "r") as d:
     TOKEN = d.read()
@@ -30,21 +31,21 @@ status = cycle(status_liste)
 async def ist_admin(ctx):
     return ctx.author.id in admins
 
-@client.command()
+@client.command(hidden=True)
 @commands.check(ist_admin)
 async def load(ctx, extension):
     client.load_extension(f'cogs.{extension}')
     print(f'loaded {extension}')
     await ctx.send(f'loaded {extension}')
 
-@client.command()
+@client.command(hidden=True)
 @commands.check(ist_admin)
 async def unload(ctx, extension):
     client.unload_extension(f'cogs.{extension}')
     print(f'unloaded {extension}')
     await ctx.send(f'unloaded {extension}')
 
-@client.command()
+@client.command(hidden=True)
 @commands.check(ist_admin)
 async def reload(ctx, extension):
     client.unload_extension(f'cogs.{extension}')
