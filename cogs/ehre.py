@@ -4,14 +4,14 @@ import json
 import discord
 from discord.ext import commands
 
-from main import ist_admin # Scheint zu funktionieren.
+from main import ist_admin
 
 class Ehre(commands.Cog):
 
     def __init__(self, client):
         self.client = client
 
-        self.lock = threading.Lock()
+        self.ehre_lock = threading.Lock()
         self.ehre_dict = dict()
 
         with open("data/amount.json", "r") as d:
@@ -30,22 +30,29 @@ class Ehre(commands.Cog):
 
     @commands.command()
     async def ehre(self, ctx, nutzer: discord.Member, ehre: int):
-        neu = False
+        nutzer = nutzer.id
+        sender = ctx.author.id
+
+        with self.ehre_lock:
+            if sender in self.ehre_dict:
+                if nutzer == sender:
+                    await ctx.send(f"Nutzer <@{nutzer}> hat versucht sich selber Ehre zu geben.")
+                elif nutzer in self.ehre_dict:
+                    self.ehre_dict[nutzer] += ehre
+                    await ctx.send(f"Nutzer <@{nutzer}> hat jetzt Ehre {ehre}")
+                else:
+                    await ctx.send(f"Nutzer <@{nutzer}> nimmt nicht teil.")
+
+    @commands.command()
+    async def neuer_ehren_kampfhelikopter(self, ctx, nutzer: discord.Member):
         nutzer = nutzer.id
 
-        with self.lock:
+        with self.ehre_lock:
             if nutzer in self.ehre_dict:
-                self.ehre_dict[nutzer] += ehre
+                await ctx.send(f"Nutzer <@{nutzer}> nimmt bereits teil.")
             else:
-                self.ehre_dict[nutzer] = ehre
-                neu = True
-
-            ehre = self.ehre_dict[nutzer]
-
-        if neu:
-            await ctx.send(f"Nutzer <@{nutzer}> nimmt jetzt teil und hat jetzt Ehre {ehre}")
-        else:
-            await ctx.send(f"Nutzer <@{nutzer}> hat jetzt Ehre {ehre}")
+                self.ehre_dict[nutzer] = 0
+                await ctx.send(f"Nutzer <@{nutzer}> nimmt jetzt teil.")
 
     @commands.command()
     @commands.check(ist_admin)
@@ -66,10 +73,11 @@ class Ehre(commands.Cog):
             await ctx.send(inhalt)
 
     @commands.command()
+    @commands.check(ist_admin)
     async def ehre_for_ever(self, ctx):
         zum_speichern = list()
 
-        with self.lock:
+        with self.ehre_lock:
             for i in self.ehre_dict:
                 zum_speichern.append([i, self.ehre_dict[i]])
 
