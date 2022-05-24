@@ -11,3 +11,4 @@ In *Einstellungen/token.txt* kommt der Token des Bots.
 
 # Zur Benutzung:
 Der Bot ist darauf ausgelegt auf nur einen Server verwendet zu werden, ansonsten werden die Ehre-Counter der unterschiedlichen Server gelöscht.
+
