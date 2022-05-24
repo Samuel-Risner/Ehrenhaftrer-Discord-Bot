@@ -32,8 +32,10 @@ class Update(commands.Cog):
             if cog in self.updatebare_cogs:
                 url = self.updatebare_cogs[cog]
 
-                with open(f"cogs/{cog}.py", "w") as d:
-                    d.write(urllib.request.urlopen(url).read().decode("utf-8"))
+                x = urllib.request.urlopen(url).read().decode("utf-8")
+                
+                with open(f"cogs/{cog}.txt", "w", newline='') as d:
+                    d.write(x)
 
                 await ctx.send(f"Cog {cog} wurde geupdatet, 'reload {cog}' um die Änderungen gültig zu machen.")
 
