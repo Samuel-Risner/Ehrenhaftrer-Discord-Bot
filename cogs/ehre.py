@@ -55,17 +55,17 @@ class Ehre(commands.Cog):
                 await ctx.send(f"Nutzer <@{nutzer}> nimmt jetzt teil.")
 
     @commands.command()
-    @commands.check(ist_admin)
     async def alle_ehre(self, ctx):
         inhalt = ""
 
-        for i in self.ehre_dict:
-            inhalt += "<@"
-            inhalt += str(i)
-            inhalt += ">"
-            inhalt += " "
-            inhalt += str(self.ehre_dict[i])
-            inhalt += "\n"
+        with self.ehre_lock:
+            for i in self.ehre_dict:
+                inhalt += "<@"
+                inhalt += str(i)
+                inhalt += ">"
+                inhalt += " "
+                inhalt += str(self.ehre_dict[i])
+                inhalt += "\n"
 
         if inhalt == "":
             await ctx.send("Hier ist es Ehrenlos.")
