@@ -1,9 +1,10 @@
 import threading
-import discord
-from discord.ext import commands
 import json
 
-from main import ist_admin
+import discord
+from discord.ext import commands
+
+from main import ist_admin # Scheint zu funktionieren.
 
 class Ehre(commands.Cog):
 
