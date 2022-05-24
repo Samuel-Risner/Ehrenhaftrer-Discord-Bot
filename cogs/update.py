@@ -34,7 +34,7 @@ class Update(commands.Cog):
 
                 x = urllib.request.urlopen(url).read().decode("utf-8")
                 
-                with open(f"cogs/{cog}.txt", "w", newline='') as d:
+                with open(f"cogs/{cog}.py", "w", newline='') as d:
                     d.write(x)
 
                 await ctx.send(f"Cog {cog} wurde geupdatet, 'reload {cog}' um die Änderungen gültig zu machen.")
