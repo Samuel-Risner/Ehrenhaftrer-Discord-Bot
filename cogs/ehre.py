@@ -72,7 +72,7 @@ class Ehre(commands.Cog):
         else:
             await ctx.send(inhalt)
 
-    @commands.command()
+    @commands.command(hidden=True)
     @commands.check(ist_admin)
     async def ehre_for_ever(self, ctx):
         zum_speichern = list()
