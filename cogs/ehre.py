@@ -42,6 +42,8 @@ class Ehre(commands.Cog):
                     await ctx.send(f"Nutzer <@{nutzer}> hat jetzt Ehre {ehre}")
                 else:
                     await ctx.send(f"Nutzer <@{nutzer}> nimmt nicht teil.")
+            else:
+                await ctx.send(f"Du musst teilnehmen um mitzumachen <@{nutzer}>")
 
     @commands.command()
     async def neuer_ehren_kampfhelikopter(self, ctx, nutzer: discord.Member):
