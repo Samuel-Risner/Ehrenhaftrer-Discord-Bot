@@ -39,7 +39,7 @@ class Ehre(commands.Cog):
                     await ctx.send(f"Nutzer <@{nutzer}> hat versucht sich selber Ehre zu geben.")
                 elif nutzer in self.ehre_dict:
                     self.ehre_dict[nutzer] += ehre
-                    await ctx.send(f"Nutzer <@{nutzer}> hat jetzt Ehre {ehre}")
+                    await ctx.send(f"Nutzer <@{nutzer}> hat jetzt Ehre {self.ehre_dict[nutzer]}")
                 else:
                     await ctx.send(f"Nutzer <@{nutzer}> nimmt nicht teil.")
             else:
